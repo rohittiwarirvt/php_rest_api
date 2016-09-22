@@ -1,0 +1,10 @@
+{
+  "name":"webonise api",
+  "autho":"Rohit Tiwari",
+  "autoload": {
+    "psr-4": {
+      "Webonise\\":"src/"
+    }
+  }
+
+}
