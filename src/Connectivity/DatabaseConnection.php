@@ -21,38 +21,46 @@ class  DatabaseConnection {
 
   }
 
-  public static function connect() {
+  public static function getInstance() {
     if( self::$instance == null) {
       $className =  __CLASS__;
-      self::$instance = new $className();
-      self::$instance->initConnection();
+      self::$instance = new $className;
+     // self::$instance->initConnection();
 
     }
 
-    return self::$instance->getConnection();
+    return self::$instance;
   }
 
-  private function initConnection($options = []) {
+  private static function  initConnection($options = []) {
+    $db = self::getInstance();
     $defaults = ['host' => 'localhost', 'db_name' => 'weboniseapis', 'password' => 'bric_123', 'user_name' => 'root'];
     $params = array_merge($defaults, $options);
     $connection_string = "mysql:host={$params['host']};port=3306;dbname={$params['db_name']}";
     try {
-      $this->pdo_connection = new PDO($connection_string, $params['user_name'], $params['password']);
-      $this->pdo_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $this->pdo_connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+      $db->pdo_connection = new PDO($connection_string, $params['user_name'], $params['password']);
+      $db->pdo_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $db->pdo_connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+      return $db;
 
     } catch( PDOException $e) {
       print "Error" . $e->getMessage(). "<br/>";
     }
   }
 
-  public function getConnection() {
+  public static function getConnection() {
+    try {
+      $db = self::initConnection();
+      return $db->pdo_connection;
+    } catch (Exception $e) {
+      print "Error" . $e->getMessage(). "<br/>";
+    }
 
-    return $this->pdo_connection;
   }
 
-  public function  closeConnection() {
-    $this->pdo_connection = null;
+  public static function  closeConnection() {
+    $db = self::getInstance();
+    $db->pdo_connection = null;
   }
 
   public function __clone() {

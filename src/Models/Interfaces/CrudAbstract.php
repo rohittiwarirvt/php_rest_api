@@ -25,7 +25,7 @@ abstract class CrudAbstract implements CRUD
   protected function setDatabaseConnection()
   {
 
-    $this->db_connect = DatabaseConnection::connect();
+    $this->db_connect = DatabaseConnection::getConnection();
   }
 
   public function create(array $data)
