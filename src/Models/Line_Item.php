@@ -7,7 +7,7 @@ use Webonise\Models\Interfaces\CrudAbstract;
 class Line_Item extends CrudAbstract
 
 {
-  protected $fillable = array('name', 'description', 'price', 'discount','category_id');
+  protected $fillable = array('cart_id', 'product_id');
 
-  protected $table_name ="Line_Items";
+  public $table_name ="Line_Items";
 }

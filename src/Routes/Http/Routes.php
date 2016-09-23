@@ -34,9 +34,9 @@ Class Routes {
     $result = null;
     foreach ($this->routes as $key => $route) {
      $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9\_\-]+/', '([a-zA-Z0-9\-\_]+)', preg_quote($route['url'])) . "$@D";
-
       if ($route['method'] == $method && preg_match($pattern, $request_endpoint, $matches)) {
         array_shift($matches);
+
         $matches = array_merge($matches, $args);
         $result = call_user_func_array($route['callback'], $matches);
       }

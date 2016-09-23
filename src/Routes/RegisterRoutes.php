@@ -76,26 +76,27 @@ class RegisterRoutes {
 
       // Cart apis
     $this->route->addRoute('POST', '/carts/:productid', function($product_id,$args){
-      $cart  = new Product();
-      return $this->response->responseOK($cart->create($product_id,$args));
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->createCart($product_id,$args));
 
     });
 
     $this->route->addRoute('GET', '/carts/:id', function($id){
-      $cart  = new Product();
-      return $this->response->responseOK($cart->retrieve(['id' => $id]));
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->retrieve($id));
 
     });
 
-    $this->route->addRoute('PUT', '/carts/:id/:productid', function($id, $product_id, $args){
-      $cart  = new Product();
-
-     return $this->response->responseOK($cart->update($id, $product_id, $args));
+    // e.g. http://dev.weboniseapis.local/carts/5?product_ids=[{"id":1},{"id":2}]
+    $this->route->addRoute('PUT', '/carts/:id', function($id, $args){
+      $cart  = new Cart();
+   //   return "ad";
+     return $this->response->responseOK($cart->updateCart($id, $args));
 
     });
 
     $this->route->addRoute('DELETE', '/carts/:id', function($id){
-      $cart  = new Product();
+      $cart  = new Cart();
       return $this->response->responseOK($cart->delete($id));
 
     });
