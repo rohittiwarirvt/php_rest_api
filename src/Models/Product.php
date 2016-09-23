@@ -15,6 +15,7 @@ class Product extends CrudAbstract
   public $category;
 
   public function __construct() {
+    parent::__construct();
     $this->category = new Category();
   }
   public function getCategory($prod_id) {
