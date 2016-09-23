@@ -34,7 +34,7 @@ CREATE TABLE `Carts` (
   `grand_total` decimal(10,0) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ CREATE TABLE `Carts` (
 
 LOCK TABLES `Carts` WRITE;
 /*!40000 ALTER TABLE `Carts` DISABLE KEYS */;
+INSERT INTO `Carts` VALUES (5,'mycart1','test cart',23,5,18,0,18,18);
 /*!40000 ALTER TABLE `Carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +60,7 @@ CREATE TABLE `Categories` (
   `description` varchar(45) DEFAULT NULL,
   `tax` decimal(10,0) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +69,7 @@ CREATE TABLE `Categories` (
 
 LOCK TABLES `Categories` WRITE;
 /*!40000 ALTER TABLE `Categories` DISABLE KEYS */;
-INSERT INTO `Categories` VALUES (1,'Category1','dasf',21);
+INSERT INTO `Categories` VALUES (2,'category2','asdfasdf',12),(3,'category3','asdfasdf',1),(4,'category3','asdfasdf',1),(5,'category3','asdfasdf',1),(6,'category3','asdfasdf',1),(7,'category4','asdfasdf',1),(8,'category4','asdfasdf',1),(9,'category4','asdfasdf',1),(10,'category4','asdfasdf',1),(11,'category4','asdfasdf',1),(12,'category4','asdfasdf',1),(13,'category4','asdfasdf',1);
 /*!40000 ALTER TABLE `Categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +85,7 @@ CREATE TABLE `Line_Items` (
   `cart_id` int(11) DEFAULT NULL,
   `product_id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,6 +94,7 @@ CREATE TABLE `Line_Items` (
 
 LOCK TABLES `Line_Items` WRITE;
 /*!40000 ALTER TABLE `Line_Items` DISABLE KEYS */;
+INSERT INTO `Line_Items` VALUES (2,5,'1'),(3,5,'2');
 /*!40000 ALTER TABLE `Line_Items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +114,7 @@ CREATE TABLE `Products` (
   `category_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +123,7 @@ CREATE TABLE `Products` (
 
 LOCK TABLES `Products` WRITE;
 /*!40000 ALTER TABLE `Products` DISABLE KEYS */;
-INSERT INTO `Products` VALUES (1,'prod1','lorem',23,5,1);
+INSERT INTO `Products` VALUES (1,'prod1','lorem',23,5,1),(2,'prod2','asdfasdf',23,5,1);
 /*!40000 ALTER TABLE `Products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -134,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-22 10:51:04
+-- Dump completed on 2016-09-23 13:29:42
