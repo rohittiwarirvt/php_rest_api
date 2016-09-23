@@ -8,5 +8,5 @@ class Category extends CrudAbstract
 {
   protected $fillable = array('name', 'description', 'tax');
 
-  protected $table_name ="Categories";
+  public $table_name ="Categories";
 }
