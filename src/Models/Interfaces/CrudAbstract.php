@@ -25,8 +25,7 @@ abstract class CrudAbstract implements CRUD
   protected function setDatabaseConnection()
   {
 
-    $connect = new DatabaseConnection();
-    $this->db_connect = $connect->getConnection();
+    $this->db_connect = DatabaseConnection::connect();
   }
 
   public function create(array $data)
@@ -48,12 +47,13 @@ abstract class CrudAbstract implements CRUD
       $query = $this->db_connect->prepare($stmt);
 
       $result = $query->execute();
-
+      $lastInsertId = $this->db_connect->lastInsertId();
+      $result = $this->findBy(array('id' => $lastInsertId));
     }
     catch(PDOException $e) {
     echo  "<br>" . $e->getMessage();
     }
-    return $result;
+    return $result ;
   }
 
   public function update($id, $data)
@@ -69,7 +69,6 @@ abstract class CrudAbstract implements CRUD
     }
     $set_values = rtrim($set_values, ',');
     $stmt = "UPDATE {$this->table_name} set {$set_values} where id=$id";
-    print $stmt;
     try {
       $query = $this->db_connect->prepare($stmt);
 
@@ -79,7 +78,7 @@ abstract class CrudAbstract implements CRUD
     catch(PDOException $e) {
     echo  "<br>" . $e->getMessage();
     }
-    return $result;
+    return $result = "Updated Record Succesfully";;
   }
 
   public function delete($id)
@@ -96,7 +95,7 @@ abstract class CrudAbstract implements CRUD
     catch(PDOException $e) {
     echo  "<br>" . $e->getMessage();
     }
-    return $result;
+    return $result = "Deleted Record Succesfully";
   }
 
   public function retrieve($matches = array())
@@ -104,10 +103,52 @@ abstract class CrudAbstract implements CRUD
 
     //@Todo integration of matches
     $stmt = "select * from {$this->table_name}";
+    var_dump($this->db_connect);
     try {
       $query = $this->db_connect->query($stmt);
 
       $result = $query->fetchAll();
+
+    }
+    catch(PDOException $e) {
+    echo  "<br>" . $e->getMessage();
+    }
+    return $result;
+  }
+
+  public function findBy($options) {
+    $and_or_select = false;
+    $first = isset($option['first']) ? true : false;
+
+    if ($first) {
+      unset($option['first']);
+    }
+
+    if (!isset($options['or'])|| !isset($options['and'])) {
+      $defaults = array_merge([], ['and' => $options]);
+    } else {
+      $and_or_select = true;
+    }
+
+    $stmt = "select * from {$this->table_name} where ";
+    if (!$and_or_select) {
+      foreach ($defaults['and'] as $key => $value) {
+        $stmt .= $key . '='. $value . 'and';
+      }
+      $stmt = rtrim($stmt, 'and');
+    } else {
+      // @Todo and and or grouping
+    }
+
+    try {
+      $query = $this->db_connect->query($stmt);
+
+      if (!$first) {
+      $result = $query->fetchAll();
+      } else {
+        $result = $query->fetch();
+      }
+
 
     }
     catch(PDOException $e) {
