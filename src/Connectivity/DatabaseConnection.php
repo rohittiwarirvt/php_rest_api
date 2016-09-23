@@ -25,8 +25,6 @@ class  DatabaseConnection {
     if( self::$instance == null) {
       $className =  __CLASS__;
       self::$instance = new $className;
-     // self::$instance->initConnection();
-
     }
 
     return self::$instance;
