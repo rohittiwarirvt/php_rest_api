@@ -33,7 +33,7 @@ class  Cart extends CrudAbstract
 
   public function createCart($product_id, array $data) {
 
-    $product = $this->product->findBy(['id' => $product_id])[0];
+    $product = $this->product->findBy(['id' => $product_id, 'first' => true]);
 
     $category = $this->product->getCategory($product_id)[0];
 
@@ -66,12 +66,12 @@ class  Cart extends CrudAbstract
   }
 
 
-  public function updateCart($cart_id, $args) {
-    $cart_exists = $this->findBy(['id' => $cart_id]);
+  public function addProductsCart($cart_id, $args) {
+    $cart_exists = $this->findBy(['id' => $cart_id, 'first' => true]);
     if($cart_exists && isset($args['product_ids'])) {
       $product_ids = json_decode($args['product_ids']);
       foreach ($product_ids as $key => $product_id) {
-       // print_r();
+      //  print_r($product_id);
         $product_id = (array)$product_id;
         $this->addProductToCart($cart_id, $product_id['id']);
       }
@@ -79,8 +79,72 @@ class  Cart extends CrudAbstract
   }
 
   public function addProductToCart($cart_id, $product_id) {
+  //  print_r($product_id);
+    $cart = $this->findBy(['id' => $cart_id, 'first' => true]);
+    $product = $this->product->findBy(['id' => $product_id, 'first' => true]);
+    // print_r($product);
+    // return $product;
+    $category = $this->product->getCategory($product_id)[0];
+    if (!empty($product)){
+      $cart['total'] += $product['price'];
+      $cart['total_discount'] += $product['discount'];
+      $cart['total_with_discount'] += $product['price'] -  $product['discount'];
+      if($category) {
+        $cart['total_tax'] += $category['tax'];
+        $cart['total_with_tax'] +=  $cart['total_with_discount'] + $category['tax'];
+        }
+        $cart['grand_total'] = $cart['total_with_tax'];
+        array_walk_recursive($cart,  function(&$item, $key) {
+            $item = is_null($item)? 0 : $item;
+        });
+      }
+      //print_r($cart);
+      $this->update($cart_id,$cart);
     return $this->line_item->create(['cart_id' => $cart_id,'product_id' => $product_id]);
   }
+
+
+  public function removeProductsCart($cart_id, $args) {
+    $cart_exists = $this->findBy(['id' => $cart_id, 'first' => true]);
+    if($cart_exists && isset($args['product_ids'])) {
+      $product_ids = json_decode($args['product_ids']);
+      foreach ($product_ids as $key => $product_id) {
+      //  print_r($product_id);
+        $product_id = (array)$product_id;
+        $this->removeProductToCart($cart_id, $product_id['id']);
+      }
+    }
+  }
+
+  public function removeProductToCart($cart_id, $product_id) {
+    $line_item = $this->line_item->findBy(['cart_id' => $cart_id,'product_id' => $product_id, 'first' => true]);
+    if (!empty($line_item)) {
+        $cart = $this->findBy(['id' => $cart_id, 'first' => true]);
+
+        $product = $this->product->findBy(['id' => $product_id, 'first' => true]);
+
+        $category = $this->product->getCategory($product_id)[0];
+        if (!empty($product)){
+          $cart['total'] -= $product['price'];
+          $cart['total_discount'] -= $product['discount'];
+          $cart['total_with_discount'] -= $product['price'] -  $product['discount'];
+          if($category) {
+            $cart['total_tax'] -= $category['tax'];
+            $cart['total_with_tax'] -=  $cart['total_with_discount'] + $category['tax'];
+            }
+            $cart['grand_total'] = $cart['total_with_tax'];
+            array_walk_recursive($cart,  function(&$item, $key) {
+                $item = is_null($item)? 0 : $item;
+            });
+          }
+         // print_r($line_item);
+         $this->update($cart_id,$cart);
+      //  $cart = $this->findBy(['id' => $cart_id, 'first' => true]);
+       return $this->line_item->delete($line_item['id']);
+    }
+
+  }
+
 
   public function retrieve($cart_id) {
     $result = [];
@@ -96,27 +160,35 @@ class  Cart extends CrudAbstract
 
   //ToDo
   public function calculateCartTotal($cart_id) {
-    //$cart = $this->findBy(['id' => $cart_id]);
+
+    $cart = $this->findBy(['id' => $cart_id,'first' => true]);
+    return  $cart['total'];
+
   }
 
   public function calculateCartTotalDiscount($cart_id) {
-    //$cart = $this->findBy(['id' => $cart_id]);
+    $cart = $this->findBy(['id' => $cart_id,'first' => true]);
+    return  $cart['total_discount'];
   }
 
   public function calculateCartTotalWithDiscount($cart_id) {
-    //$cart = $this->findBy(['id' => $cart_id]);
+    $cart = $this->findBy(['id' => $cart_id,'first' => true]);
+    return  $cart['total_with_discount'];
   }
 
   public function calculateCartTotalTax($cart_id) {
-    //$cart = $this->findBy(['id' => $cart_id]);
+    $cart = $this->findBy(['id' => $cart_id,'first' => true]);
+    return  $cart['total_tax'];
   }
 
     public function calculateCartTotalWithTax($cart_id) {
-
+    $cart = $this->findBy(['id' => $cart_id,'first' => true]);
+    return  $cart['total_with_tax'];
   }
 
     public function calculateCartGrandTotal($cart_id) {
-
+    $cart = $this->findBy(['id' => $cart_id,'first' => true]);
+    return  $cart['grand_total'];
   }
 
   public function getLineItems($cart_id){

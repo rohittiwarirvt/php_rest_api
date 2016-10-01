@@ -80,7 +80,7 @@ abstract class CrudAbstract implements CRUD
 
     try {
       $query = $this->db_connect->prepare($stmt);
-
+    //print $stmt;
       $result = $query->execute();
 
     }
@@ -110,10 +110,10 @@ abstract class CrudAbstract implements CRUD
 
   public function findBy($options) {
     $and_or_select = false;
-    $first = isset($option['first']) ? true : false;
+    $first = isset($options['first']) ? true : false;
 
     if ($first) {
-      unset($option['first']);
+      unset($options['first']);
     }
 
     if (!isset($options['or'])|| !isset($options['and'])) {
@@ -125,13 +125,13 @@ abstract class CrudAbstract implements CRUD
     $stmt = "select * from {$this->table_name} where ";
     if (!$and_or_select) {
       foreach ($defaults['and'] as $key => $value) {
-        $stmt .= $key . '='. $value . 'and';
+        $stmt .= $key . '='. $value . ' AND ';
       }
-      $stmt = rtrim($stmt, 'and');
+      $stmt = rtrim($stmt, ' AND ');
     } else {
       // @Todo and and or grouping
     }
-
+     // print_r($stmt);
     try {
       $query = $this->db_connect->query($stmt);
 
@@ -146,6 +146,7 @@ abstract class CrudAbstract implements CRUD
     catch(PDOException $e) {
     echo  "<br>" . $e->getMessage();
     }
+    // print_r($result);
     return $result;
   }
 

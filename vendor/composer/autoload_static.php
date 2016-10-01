@@ -20,27 +20,11 @@ class ComposerStaticInitc0dfca88e4ea273bf20dfb0a85d22504
         ),
     );
 
-    public static $classMap = array (
-        'Webonise\\Connectivity\\DatabaseConnection' => __DIR__ . '/../..' . '/src/Connectivity/DatabaseConnection.php',
-        'Webonise\\Models\\Cart' => __DIR__ . '/../..' . '/src/Models/Cart.php',
-        'Webonise\\Models\\Category' => __DIR__ . '/../..' . '/src/Models/Category.php',
-        'Webonise\\Models\\Interfaces\\CRUD' => __DIR__ . '/../..' . '/src/Models/Interfaces/CRUD.php',
-        'Webonise\\Models\\Interfaces\\CrudAbstract' => __DIR__ . '/../..' . '/src/Models/Interfaces/CrudAbstract.php',
-        'Webonise\\Models\\Line_Item' => __DIR__ . '/../..' . '/src/Models/Line_Item.php',
-        'Webonise\\Models\\Product' => __DIR__ . '/../..' . '/src/Models/Product.php',
-        'Webonise\\Routes\\Http\\Request' => __DIR__ . '/../..' . '/src/Routes/Http/Request.php',
-        'Webonise\\Routes\\Http\\Response' => __DIR__ . '/../..' . '/src/Routes/Http/Response.php',
-        'Webonise\\Routes\\Http\\Routes' => __DIR__ . '/../..' . '/src/Routes/Http/Routes.php',
-        'Webonise\\Routes\\RegisterRoutes' => __DIR__ . '/../..' . '/src/Routes/RegisterRoutes.php',
-        'Webonise\\Schema\\DefaultSeeder' => __DIR__ . '/../..' . '/src/Schema/DefaultSeeder.php',
-    );
-
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitc0dfca88e4ea273bf20dfb0a85d22504::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitc0dfca88e4ea273bf20dfb0a85d22504::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc0dfca88e4ea273bf20dfb0a85d22504::$classMap;
 
         }, null, ClassLoader::class);
     }

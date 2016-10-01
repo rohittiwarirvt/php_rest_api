@@ -6,16 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Webonise\\Connectivity\\DatabaseConnection' => $baseDir . '/src/Connectivity/DatabaseConnection.php',
-    'Webonise\\Models\\Cart' => $baseDir . '/src/Models/Cart.php',
-    'Webonise\\Models\\Category' => $baseDir . '/src/Models/Category.php',
-    'Webonise\\Models\\Interfaces\\CRUD' => $baseDir . '/src/Models/Interfaces/CRUD.php',
-    'Webonise\\Models\\Interfaces\\CrudAbstract' => $baseDir . '/src/Models/Interfaces/CrudAbstract.php',
-    'Webonise\\Models\\Line_Item' => $baseDir . '/src/Models/Line_Item.php',
-    'Webonise\\Models\\Product' => $baseDir . '/src/Models/Product.php',
-    'Webonise\\Routes\\Http\\Request' => $baseDir . '/src/Routes/Http/Request.php',
-    'Webonise\\Routes\\Http\\Response' => $baseDir . '/src/Routes/Http/Response.php',
-    'Webonise\\Routes\\Http\\Routes' => $baseDir . '/src/Routes/Http/Routes.php',
-    'Webonise\\Routes\\RegisterRoutes' => $baseDir . '/src/Routes/RegisterRoutes.php',
-    'Webonise\\Schema\\DefaultSeeder' => $baseDir . '/src/Schema/DefaultSeeder.php',
 );
