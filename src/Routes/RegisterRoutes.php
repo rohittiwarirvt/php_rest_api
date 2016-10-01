@@ -90,8 +90,16 @@ class RegisterRoutes {
     // e.g. http://dev.weboniseapis.local/carts/5?product_ids=[{"id":1},{"id":2}]
     $this->route->addRoute('PUT', '/carts/:id', function($id, $args){
       $cart  = new Cart();
-   //   return "ad";
-     return $this->response->responseOK($cart->updateCart($id, $args));
+
+     return $this->response->responseOK($cart->addProductsCart($id, $args));
+
+    });
+
+    // e.g. http://dev.weboniseapis.local/carts/5?product_ids=[{"id":1},{"id":2}]
+    $this->route->addRoute('DELETE', '/removeproductsfromcart/:id', function($id, $args){
+      $cart  = new Cart();
+     // print_r("dd");
+     return $this->response->responseOK($cart->removeProductsCart($id, $args));
 
     });
 
@@ -100,6 +108,43 @@ class RegisterRoutes {
       return $this->response->responseOK($cart->delete($id));
 
     });
+
+    $this->route->addRoute('GET', '/calculatecarttotal/:id', function($id){
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->calculateCartTotal($id));
+
+    });
+
+    $this->route->addRoute('GET', '/calculatecarttotaldiscount/:id', function($id){
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->calculateCartTotalDiscount($id));
+
+    });
+
+    $this->route->addRoute('GET', '/calculatecarttotalwithdiscount/:id', function($id){
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->calculateCartTotalWithDiscount($id));
+
+    });
+
+    $this->route->addRoute('GET', '/calculatecarttotaltax/:id', function($id){
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->calculateCartTotalTax($id));
+
+    });
+
+    $this->route->addRoute('GET', '/calculatecarttotalwithtax/:id', function($id){
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->calculateCartTotalWithTax($id));
+
+    });
+
+    $this->route->addRoute('GET', '/calculatecartgrandtotal/:id', function($id){
+      $cart  = new Cart();
+      return $this->response->responseOK($cart->calculateCartGrandTotal($id));
+
+    });
+
     return $this->route->startRouting();
   }
 
